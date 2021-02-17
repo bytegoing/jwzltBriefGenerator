@@ -14,26 +14,27 @@ namespace jwzltBriefGenerator.User
 {
     public partial class browserForm : Form
     {
-        public string url = "";
+        public string url = "www.baidu.com";
         public object obj = null;
         public string str = "";
         ChromiumWebBrowser chromeBrowser;
-        public browserForm(string urlx = "www.baidu.com", string strx = "", object objx = null)
+        public browserForm()
         {
             InitializeComponent();
-            url = urlx;
-            obj = objx;
-            str = strx;
-            InitializeChromium();
+            CefSettings settings = new CefSettings();
+            settings.CefCommandLineArgs.Add("--allow-file-access-from-files");
+            // Initialize cef with the provided settings
+            Cef.Initialize(settings);
+        }
+
+        ~browserForm()
+        {
+            Cef.Shutdown();
         }
 
         //初始化浏览器并启动
         public void InitializeChromium()
         {
-            CefSettings settings = new CefSettings();
-            settings.CefCommandLineArgs.Add("--allow-file-access-from-files");
-            // Initialize cef with the provided settings
-            Cef.Initialize(settings);
             // Create a browser component
             chromeBrowser = new ChromiumWebBrowser(url);
             // Add it to the form and fill it to the form window.
@@ -48,9 +49,14 @@ namespace jwzltBriefGenerator.User
             chromeBrowser.GetBrowser().MainFrame.ExecuteJavaScriptAsync("document.getElementById('info').value='" + str + "'; generate();");
         }
 
-        private void browserForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void browserForm_Load(object sender, EventArgs e)
         {
-            Cef.Shutdown();
+            InitializeChromium();
+        }
+
+        private void browserForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            chromeBrowser.Dispose();
         }
     }
 

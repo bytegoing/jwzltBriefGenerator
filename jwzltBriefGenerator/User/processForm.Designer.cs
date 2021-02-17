@@ -43,20 +43,22 @@ namespace jwzltBriefGenerator.User
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.singleNameText = new System.Windows.Forms.Label();
-            this.singleContentText = new System.Windows.Forms.TextBox();
             this.singlePrevButton = new System.Windows.Forms.Button();
             this.singleNextButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
-            this.insertButton = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.processLabel = new System.Windows.Forms.Label();
             this.fileLabel = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.suggestionText = new System.Windows.Forms.TextBox();
+            this.c2Text = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.problemText = new System.Windows.Forms.TextBox();
+            this.c1Text = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.singleContentText = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // prevButton
@@ -193,14 +195,6 @@ namespace jwzltBriefGenerator.User
             this.singleNameText.TabIndex = 0;
             this.singleNameText.Text = "项目名称";
             // 
-            // singleContentText
-            // 
-            this.singleContentText.Location = new System.Drawing.Point(494, 104);
-            this.singleContentText.Multiline = true;
-            this.singleContentText.Name = "singleContentText";
-            this.singleContentText.Size = new System.Drawing.Size(459, 290);
-            this.singleContentText.TabIndex = 1;
-            // 
             // singlePrevButton
             // 
             this.singlePrevButton.Location = new System.Drawing.Point(495, 72);
@@ -239,15 +233,6 @@ namespace jwzltBriefGenerator.User
             this.label10.Size = new System.Drawing.Size(67, 15);
             this.label10.TabIndex = 22;
             this.label10.Text = "展示项目";
-            // 
-            // insertButton
-            // 
-            this.insertButton.Location = new System.Drawing.Point(736, 72);
-            this.insertButton.Name = "insertButton";
-            this.insertButton.Size = new System.Drawing.Size(139, 26);
-            this.insertButton.TabIndex = 5;
-            this.insertButton.Text = "插入多段段首缩进";
-            this.insertButton.UseVisualStyleBackColor = true;
             // 
             // label12
             // 
@@ -288,54 +273,92 @@ namespace jwzltBriefGenerator.User
             this.textBox1.TabIndex = 26;
             this.textBox1.Text = "提示：\r\n请妥善处理格式与多余字符!\r\n";
             // 
-            // suggestionText
+            // c2Text
             // 
-            this.suggestionText.Location = new System.Drawing.Point(969, 331);
-            this.suggestionText.Multiline = true;
-            this.suggestionText.Name = "suggestionText";
-            this.suggestionText.Size = new System.Drawing.Size(323, 238);
-            this.suggestionText.TabIndex = 28;
+            this.c2Text.Location = new System.Drawing.Point(987, 330);
+            this.c2Text.Multiline = true;
+            this.c2Text.Name = "c2Text";
+            this.c2Text.Size = new System.Drawing.Size(323, 238);
+            this.c2Text.TabIndex = 28;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(966, 313);
+            this.label1.Location = new System.Drawing.Point(984, 312);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 15);
+            this.label1.Size = new System.Drawing.Size(150, 15);
             this.label1.TabIndex = 29;
-            this.label1.Text = "优秀建议";
+            this.label1.Text = "优秀建议（自定义2）";
             // 
-            // problemText
+            // c1Text
             // 
-            this.problemText.Location = new System.Drawing.Point(969, 70);
-            this.problemText.Multiline = true;
-            this.problemText.Name = "problemText";
-            this.problemText.Size = new System.Drawing.Size(323, 238);
-            this.problemText.TabIndex = 30;
+            this.c1Text.Location = new System.Drawing.Point(987, 69);
+            this.c1Text.Multiline = true;
+            this.c1Text.Name = "c1Text";
+            this.c1Text.Size = new System.Drawing.Size(323, 238);
+            this.c1Text.TabIndex = 30;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(966, 51);
+            this.label4.Location = new System.Drawing.Point(984, 50);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 15);
+            this.label4.Size = new System.Drawing.Size(150, 15);
             this.label4.TabIndex = 31;
-            this.label4.Text = "典型问题";
+            this.label4.Text = "典型问题（自定义1）";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(959, 293);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(22, 15);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "→";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(984, 23);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(292, 15);
+            this.label11.TabIndex = 33;
+            this.label11.Text = "提示：问题与建议序号务必搭配、对应好！";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(724, 78);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(142, 15);
+            this.label13.TabIndex = 34;
+            this.label13.Text = "注意修改高亮字符！";
+            // 
+            // singleContentText
+            // 
+            this.singleContentText.Location = new System.Drawing.Point(493, 104);
+            this.singleContentText.Name = "singleContentText";
+            this.singleContentText.Size = new System.Drawing.Size(458, 290);
+            this.singleContentText.TabIndex = 35;
+            this.singleContentText.Text = "";
+            this.singleContentText.TextChanged += new System.EventHandler(this.singleContentText_TextChanged);
             // 
             // processForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1304, 580);
+            this.ClientSize = new System.Drawing.Size(1324, 580);
+            this.Controls.Add(this.singleContentText);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.problemText);
+            this.Controls.Add(this.c1Text);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.suggestionText);
+            this.Controls.Add(this.c2Text);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.fileLabel);
             this.Controls.Add(this.processLabel);
-            this.Controls.Add(this.singleContentText);
-            this.Controls.Add(this.insertButton);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.singleNextButton);
             this.Controls.Add(this.label10);
@@ -384,17 +407,19 @@ namespace jwzltBriefGenerator.User
         private System.Windows.Forms.Label singleNameText;
         private System.Windows.Forms.Button singleNextButton;
         private System.Windows.Forms.Button singlePrevButton;
-        private System.Windows.Forms.TextBox singleContentText;
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button insertButton;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label processLabel;
         private System.Windows.Forms.Label fileLabel;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox suggestionText;
+        private System.Windows.Forms.TextBox c2Text;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox problemText;
+        private System.Windows.Forms.TextBox c1Text;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.RichTextBox singleContentText;
     }
 }

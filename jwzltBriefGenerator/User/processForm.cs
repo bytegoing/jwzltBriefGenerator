@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,11 +16,14 @@ namespace jwzltBriefGenerator.User
 {
     public partial class processForm : Form
     {
+        enum SAVE_PROGRESS {DoNotSave, SingleList, TotalList, Combo}; //重新载入数据时保存**进度**到哪里?
+
         public string username = "";
         public string filename = "";
         public int department;
         public string departmentName;
         public string fromStr, toStr; //从0开始。第1条为0。
+        public int customColumnNumber = 0; //0代表无自定义字段
         DataTable dt;
 
         private void processForm_Load(object sender, EventArgs e)
@@ -38,6 +42,25 @@ namespace jwzltBriefGenerator.User
             if (toStr == "") toStr = "0";
             fileLabel.Text = (Convert.ToInt32(fromStr) + 1) + "~" + (Convert.ToInt32(toStr) + 1);
             departmentText.Text = departmentName;
+            //判断自定义列个数，目前最大支持2
+            while (dt.Columns[dt.Columns.Count - customColumnNumber - 1].ColumnName != "" 
+                && dt.Rows[2][dt.Columns.Count - customColumnNumber - 1].ToString() == ""
+                && dt.Rows[3][dt.Columns.Count - customColumnNumber - 1].ToString() == "")
+                customColumnNumber++;
+            if (customColumnNumber == 0)
+            {
+                dt.Columns.Add("自定义1");
+                dt.Columns.Add("自定义2");
+            }
+            else
+            {
+                if (customColumnNumber > 2) customColumnNumber = 2;
+                c1Text.Text = Regex.Replace(dt.Rows[0][dt.Columns.Count - 2].ToString(), @"<br>", System.Environment.NewLine);
+                c2Text.Text = Regex.Replace(dt.Rows[0][dt.Columns.Count - 1].ToString(), @"<br>", System.Environment.NewLine);
+                //c1Text.Text = dt.Rows[0][dt.Columns.Count - 2].ToString();
+                //c2Text.Text = dt.Rows[0][dt.Columns.Count - 1].ToString();
+            }
+            Console.WriteLine("Get customColumn: " + customColumnNumber);
             Reload();
         }
 
@@ -60,7 +83,7 @@ namespace jwzltBriefGenerator.User
             singleList.Columns.Add("项目内容", 120);
             //加载内容
             singleList.BeginUpdate();
-            for(int i = 0;i < dt.Columns.Count;i++)
+            for(int i = 0;i < dt.Columns.Count - customColumnNumber;i++)
             {
                 ListViewItem lvi = new ListViewItem();
                 lvi.Text = dt.Columns[i].ColumnName;
@@ -77,11 +100,12 @@ namespace jwzltBriefGenerator.User
             if (singleList.SelectedIndices != null && singleList.SelectedIndices.Count > 0)
             {
                 singleNameText.Text = singleList.SelectedItems[0].SubItems[0].Text;
-                singleContentText.Text = singleList.SelectedItems[0].SubItems[1].Text;
+                singleContentText.Text = Regex.Replace(singleList.SelectedItems[0].SubItems[1].Text, @"<br>", System.Environment.NewLine);
+                //singleContentText.Text = singleList.SelectedItems[0].SubItems[1].Text;
             }
         }
 
-        private void Reload(int save = 0) //刷新, save表示是否保存,0不保存,1保存到combo,2保存到totalList,3保存到singleList
+        private void Reload(SAVE_PROGRESS saveType = SAVE_PROGRESS.DoNotSave) //刷新, save表示是否保存,0不保存,1保存到combo,2保存到totalList,3保存到singleList
         {
             if(dt == null || dt.Rows.Count <= 0)
             {
@@ -90,38 +114,38 @@ namespace jwzltBriefGenerator.User
                 return;
             }
             int saveCombo = 0, saveTotalList = 0, saveSingleList = 0;
-            switch(save)
+            switch(saveType)
             {
-                case 3:
+                case SAVE_PROGRESS.SingleList:
                     //保存到singleList
                     saveSingleList = singleList.SelectedIndices[0];
-                    goto case 2;
-                case 2:
+                    goto case SAVE_PROGRESS.TotalList;
+                case SAVE_PROGRESS.TotalList:
                     //保存到totalList
                     saveTotalList = totalList.SelectedIndex;
-                    goto case 1;
-                case 1:
+                    goto case SAVE_PROGRESS.Combo;
+                case SAVE_PROGRESS.Combo:
                     //保存到Combo
                     saveCombo = filterCombo.SelectedIndex;
                     break;
             }
             filterCombo.Items.Clear();
-            for (int i = 0; i < dt.Columns.Count; i++)
+            for (int i = 0; i < dt.Columns.Count - customColumnNumber; i++)
             {
                 filterCombo.Items.Add(dt.Columns[i].ColumnName);
             }
             filterCombo.SelectedIndex = 0;
             totalList.SelectedIndex = 0;
-            switch(save) //TODO: 优化
+            switch (saveType) //TODO: 优化
             {
-                case 1:
+                case SAVE_PROGRESS.Combo:
                     filterCombo.SelectedIndex = saveCombo;
                     break;
-                case 2:
+                case SAVE_PROGRESS.TotalList:
                     filterCombo.SelectedIndex = saveCombo;
                     totalList.SelectedIndex = saveTotalList;
                     break;
-                case 3:
+                case SAVE_PROGRESS.SingleList:
                     filterCombo.SelectedIndex = saveCombo;
                     totalList.SelectedIndex = saveTotalList;
                     singleList.Items[saveSingleList].Selected = true;
@@ -136,9 +160,27 @@ namespace jwzltBriefGenerator.User
             //刷新dt中值
             int nowSelectedRow = totalList.SelectedIndex;
             int nowSelectedColumnIndex = singleList.SelectedIndices[0];
-            string nowSelectedColumnContent = singleContentText.Text;
+            string nowSelectedColumnContent = Regex.Replace(singleContentText.Text, System.Environment.NewLine, @"<br>");
+            //string nowSelectedColumnContent = singleContentText.Text;
             dt.Rows[nowSelectedRow][nowSelectedColumnIndex] = nowSelectedColumnContent;
-            Reload(3);
+            if (c1Text.Text != "" || c2Text.Text != "")
+            {
+                customColumnNumber = 2;
+            }
+            if (customColumnNumber == 0)
+            {
+                if (c1Text.Text != "" || c2Text.Text != "")
+                {
+                    customColumnNumber = 2;
+                }
+            }
+            /*c2Text.Text = c2Text.Text.Replace("\r\n", "\n");
+            c1Text.Text = c1Text.Text.Replace("\r\n", "\n");*/
+            dt.Rows[0][dt.Columns.Count - 1] = Regex.Replace(c2Text.Text, System.Environment.NewLine, "<br>");
+            dt.Rows[0][dt.Columns.Count - 2] = Regex.Replace(c1Text.Text, System.Environment.NewLine, "<br>");
+            /*dt.Rows[0][dt.Columns.Count - 1] = c2Text.Text;
+            dt.Rows[0][dt.Columns.Count - 2] = c1Text.Text;*/
+            Reload(SAVE_PROGRESS.SingleList);
         }
 
         private void saveTotal() //保存整个dt，写回excel
@@ -196,7 +238,7 @@ namespace jwzltBriefGenerator.User
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if(totalList.Items.Count == 1)
+            if(totalList.Items.Count <= 1)
             {
                 Utils.ShowTip("提示", "仅有一条简报，无法删除!");
                 return;
@@ -205,7 +247,7 @@ namespace jwzltBriefGenerator.User
             {
                 dt.Rows[totalList.SelectedIndex].Delete();
                 Utils.ShowTip("提示", "删除成功!");
-                Reload(1);
+                Reload(SAVE_PROGRESS.Combo);
             }
         }
 
@@ -229,6 +271,28 @@ namespace jwzltBriefGenerator.User
                 return;
             }
             totalList.SelectedIndex += 1;
+        }
+
+        private void singleContentText_TextChanged(object sender, EventArgs e)
+        {
+            List<string> keyword = new List<string>() { "／", "－", "(", ")", ".", "	", " " };
+            foreach (var word in keyword)
+            {
+
+                int s_start = singleContentText.SelectionStart, startIndex = 0, index;
+
+                while ((index = singleContentText.Text.IndexOf(word, startIndex)) != -1)
+                {
+                    startIndex = index + word.Length;
+                    if (index == 0) continue;
+                    singleContentText.Select(index, word.Length);
+                    singleContentText.SelectionBackColor = Color.Yellow;
+                }
+
+                singleContentText.SelectionStart = s_start;
+                singleContentText.SelectionLength = 0;
+                singleContentText.SelectionBackColor = Color.White;
+            }
         }
 
         public processForm()

@@ -17,6 +17,7 @@ namespace jwzltBriefGenerator
 {
     public partial class mainForm : Form
     {
+        browserForm browser;
         public mainForm()
         {
             InitializeComponent();
@@ -37,9 +38,18 @@ namespace jwzltBriefGenerator
             userDepartmentCombo.Items.Clear(); //清空Combo中的所有项
             //开始读取Sheet名称
             XSSFWorkbook workbook;
-            using (FileStream stream = File.OpenRead(userFilename))
+            try
             {
-                workbook = new XSSFWorkbook(stream);
+                using (FileStream stream = File.OpenRead(userFilename))
+                {
+                    workbook = new XSSFWorkbook(stream);
+                }
+            }
+            catch(Exception ex)
+            {
+                Utils.ShowTip("提示", "错误: " + ex.Message);
+                this.userFilename.Text = "";
+                return;
             }
             int SheetCount = workbook.NumberOfSheets;//获取表的数量
             for (int i = 0; i < SheetCount; i++) //逐个加入Combo
@@ -108,7 +118,7 @@ namespace jwzltBriefGenerator
             for(int i = 0;i < dt.Rows.Count;i++)
             {
                 Dictionary<string, string> tmpd = new Dictionary<string, string>();
-                tmpd.Add("序号", (i + 1)+"");
+                tmpd.Add("no", (i + 1)+"");
                 for(int j = 0;j < dt.Columns.Count;j++)
                 {
                     //tmpd.Add(dt.Columns[j].ColumnName, dt.Rows[i][j].ToString());
@@ -121,9 +131,11 @@ namespace jwzltBriefGenerator
             infoJson = Convert.ToBase64String(Encoding.UTF8.GetBytes(infoJson));
             try
             {
-                browserForm bf = new browserForm("file://" + System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "web/generator.html", infoJson) ;
-                bf.ShowDialog();
-                bf.Close();
+                Console.WriteLine("Getting new Browser...");
+                browser.url = "file://" + System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "web/generator.html";
+                browser.str = infoJson;
+                browser.ShowDialog();
+                //bf.Close();
             }
             catch (Exception ex)
             {
@@ -135,12 +147,22 @@ namespace jwzltBriefGenerator
 
         private void mainForm_Load(object sender, EventArgs e)
         {
-            
+            browser = new browserForm();
         }
 
         private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (MessageBox.Show("真的要退出程序吗？", "退出程序", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
 
+        private void mainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            browser.Dispose();
+            Dispose();
+            Application.Exit();
         }
     }
 }

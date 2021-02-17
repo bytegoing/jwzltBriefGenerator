@@ -38,7 +38,8 @@ namespace jwzltBriefGenerator.User
             this.ClientSize = new System.Drawing.Size(713, 430);
             this.Name = "browserForm";
             this.Text = "Browser";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.browserForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.browserForm_FormClosed);
+            this.Load += new System.EventHandler(this.browserForm_Load);
             this.ResumeLayout(false);
 
         }
