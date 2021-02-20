@@ -237,53 +237,77 @@ namespace jwzltBriefGenerator
             if (ifCreate) MsgBox.ShowInfo("保存成功!");
         }
 
-        public static DataTable CsvToDataTable(string filePath, bool hasTitle = true, int contentStartFrom = 1)
+        public static DataTable CsvToDataTable(string filePath, int contentStartFrom = 0)
         {
-            DataTable dt = new DataTable();           //要输出的数据表
-            StreamReader sr = new StreamReader(filePath); //文件读入流
-            bool bFirst = true;                       //指示是否第一次读取数据
-            int nowLine = 0;
-
-            //逐行读取
-            string line;
-            while ((line = sr.ReadLine()) != null)
+            DataTable dt = new DataTable();
+            String csvSplitBy = "(?<=^|,)(\"(?:[^\"]|\"\")*\"|[^,]*)";
+            StreamReader reader = new StreamReader(filePath, System.Text.Encoding.UTF8, false);
+            int i = 0, m = 0;
+            reader.Peek();
+            while (reader.Peek() > 0)
             {
-                string[] elements = line.Split(',');
-
-                int totalLength = elements[elements.Length - 1] == "" ? elements.Length - 1 : elements.Length;
-
-                //第一次读取数据时，要创建数据列
-                if (bFirst)
+                m = m + 1;
+                string str = reader.ReadLine();
+                if (m >= contentStartFrom + 1)
                 {
-                    for (int i = 0; i < totalLength; i++)
+                    if (m == contentStartFrom + 1) //如果是字段行，则自动加入字段。
                     {
-                        dt.Columns.Add();
-                    }
-                    bFirst = false;
-                    //有标题行时，第一行当做标题行处理
-                    if (hasTitle)
-                    {
-                        for (int i = 0; i < dt.Columns.Count && i < elements.Length; i++)
+                        MatchCollection mcs = Regex.Matches(str, csvSplitBy);
+                        foreach (Match mc in mcs)
                         {
-                            dt.Columns[i].ColumnName = elements[i];
+                            if(mc.Value != "") dt.Columns.Add(mc.Value.Replace("\"", "")); //增加列标题
                         }
-                        hasTitle = false;
+
                     }
-                }
-                else
-                {
-                    dt.Rows.Add();
-                    //读取一行数据
-                    for(int i = 0;i < totalLength;i++)
+                    else
                     {
-                        dt.Rows[nowLine][i] = elements[i]; //防止空列导致错误
+                        MatchCollection mcs = Regex.Matches(str, "(?<=^|,)(\"(?:[^\"]|\"\")*\"|[^,]*)");
+                        i = 0;
+                        System.Data.DataRow dr = dt.NewRow();
+                        foreach (Match mc in mcs)
+                        {
+                            if(i < dt.Columns.Count) dr[i] = mc.Value.Replace("\"", "");
+                            i++;
+                        }
+                        dt.Rows.Add(dr);  //DataTable 增加一行     
                     }
-                    nowLine++;
+
                 }
             }
-            sr.Close();
-
+            reader.Close();
             return dt;
+        }
+
+        public static void DataTableToCsv(DataTable dt, string strPath)
+        {
+            if (File.Exists(strPath))
+            {
+                File.Delete(strPath);
+            }
+            //先打印标头
+            StringBuilder strColu = new StringBuilder();
+            StringBuilder strValue = new StringBuilder();
+            int i = 0;
+            StreamWriter sw = new StreamWriter(new FileStream(strPath, FileMode.CreateNew), Encoding.GetEncoding("UTF-8"));
+            for (i = 0; i <= dt.Columns.Count - 1; i++)
+            {
+                strColu.Append(dt.Columns[i].ColumnName);
+                strColu.Append(",");
+            }
+            strColu.Remove(strColu.Length - 1, 1);//移出掉最后一个,字符
+            sw.WriteLine(strColu);
+            foreach (DataRow dr in dt.Rows)
+            {
+                strValue.Remove(0, strValue.Length);//移出
+                for (i = 0; i <= dt.Columns.Count - 1; i++)
+                {
+                    strValue.Append(dr[i].ToString());
+                    strValue.Append(",");
+                }
+                strValue.Remove(strValue.Length - 1, 1);//移出掉最后一个,字符
+                sw.WriteLine(strValue);
+            }
+            sw.Close();
         }
     }
 }

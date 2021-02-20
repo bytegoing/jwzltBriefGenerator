@@ -65,10 +65,14 @@ namespace jwzltBriefGenerator
             this.label5 = new System.Windows.Forms.Label();
             this.groupCombo = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.trimCheck = new System.Windows.Forms.CheckBox();
+            this.removeLetterCheck = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // userExportBriefDataButton
@@ -250,16 +254,17 @@ namespace jwzltBriefGenerator
             // 
             // formatDataButton
             // 
-            this.formatDataButton.Location = new System.Drawing.Point(119, 55);
+            this.formatDataButton.Location = new System.Drawing.Point(272, 19);
             this.formatDataButton.Name = "formatDataButton";
             this.formatDataButton.Size = new System.Drawing.Size(99, 38);
             this.formatDataButton.TabIndex = 14;
             this.formatDataButton.Text = "2.格式化";
             this.formatDataButton.UseVisualStyleBackColor = true;
+            this.formatDataButton.Click += new System.EventHandler(this.formatDataButton_Click);
             // 
             // editOriginDataButton
             // 
-            this.editOriginDataButton.Location = new System.Drawing.Point(14, 55);
+            this.editOriginDataButton.Location = new System.Drawing.Point(11, 74);
             this.editOriginDataButton.Name = "editOriginDataButton";
             this.editOriginDataButton.Size = new System.Drawing.Size(99, 38);
             this.editOriginDataButton.TabIndex = 13;
@@ -269,11 +274,11 @@ namespace jwzltBriefGenerator
             // 
             // exportOriginData
             // 
-            this.exportOriginData.Location = new System.Drawing.Point(224, 55);
+            this.exportOriginData.Location = new System.Drawing.Point(528, 74);
             this.exportOriginData.Name = "exportOriginData";
             this.exportOriginData.Size = new System.Drawing.Size(99, 38);
             this.exportOriginData.TabIndex = 20;
-            this.exportOriginData.Text = "3.导出";
+            this.exportOriginData.Text = "3.导出为简报数据文件";
             this.exportOriginData.UseVisualStyleBackColor = true;
             // 
             // aboutButton
@@ -314,15 +319,15 @@ namespace jwzltBriefGenerator
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.groupBox5);
             this.groupBox2.Controls.Add(this.originDataFileText);
             this.groupBox2.Controls.Add(this.originDataFileButton);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.exportOriginData);
             this.groupBox2.Controls.Add(this.editOriginDataButton);
-            this.groupBox2.Controls.Add(this.formatDataButton);
             this.groupBox2.Location = new System.Drawing.Point(7, 227);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(738, 104);
+            this.groupBox2.Size = new System.Drawing.Size(738, 145);
             this.groupBox2.TabIndex = 23;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "B.简报原始数据处理";
@@ -362,7 +367,7 @@ namespace jwzltBriefGenerator
             this.groupBox3.Controls.Add(this.groupDataFileButton);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.scoreButton);
-            this.groupBox3.Location = new System.Drawing.Point(7, 339);
+            this.groupBox3.Location = new System.Drawing.Point(7, 380);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(738, 99);
             this.groupBox3.TabIndex = 24;
@@ -373,7 +378,7 @@ namespace jwzltBriefGenerator
             // 
             this.groupBox4.Controls.Add(this.mergeButton);
             this.groupBox4.Controls.Add(this.aboutButton);
-            this.groupBox4.Location = new System.Drawing.Point(7, 444);
+            this.groupBox4.Location = new System.Drawing.Point(7, 485);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(738, 83);
             this.groupBox4.TabIndex = 25;
@@ -424,11 +429,47 @@ namespace jwzltBriefGenerator
             this.label6.TabIndex = 28;
             this.label6.Text = "2.选择部门";
             // 
+            // trimCheck
+            // 
+            this.trimCheck.AutoSize = true;
+            this.trimCheck.Checked = true;
+            this.trimCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.trimCheck.Location = new System.Drawing.Point(6, 49);
+            this.trimCheck.Name = "trimCheck";
+            this.trimCheck.Size = new System.Drawing.Size(179, 19);
+            this.trimCheck.TabIndex = 24;
+            this.trimCheck.Text = "去除文本两端空白字符";
+            this.trimCheck.UseVisualStyleBackColor = true;
+            // 
+            // removeLetterCheck
+            // 
+            this.removeLetterCheck.AutoSize = true;
+            this.removeLetterCheck.Checked = true;
+            this.removeLetterCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.removeLetterCheck.Location = new System.Drawing.Point(6, 24);
+            this.removeLetterCheck.Name = "removeLetterCheck";
+            this.removeLetterCheck.Size = new System.Drawing.Size(256, 19);
+            this.removeLetterCheck.TabIndex = 25;
+            this.removeLetterCheck.Text = "去除字母标号(例：A.必修→必修)";
+            this.removeLetterCheck.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.removeLetterCheck);
+            this.groupBox5.Controls.Add(this.trimCheck);
+            this.groupBox5.Controls.Add(this.formatDataButton);
+            this.groupBox5.Location = new System.Drawing.Point(121, 55);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(385, 76);
+            this.groupBox5.TabIndex = 26;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "2.格式化";
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 535);
+            this.ClientSize = new System.Drawing.Size(762, 577);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -445,6 +486,8 @@ namespace jwzltBriefGenerator
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -486,6 +529,9 @@ namespace jwzltBriefGenerator
         private System.Windows.Forms.Button groupDataFileButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox removeLetterCheck;
+        private System.Windows.Forms.CheckBox trimCheck;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }
 

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using jwzltBriefGenerator.User;
@@ -191,6 +192,54 @@ namespace jwzltBriefGenerator
                 MsgBox.ShowError("请选择原始简报数据文件!");
                 return;
             }
+        }
+
+        private void formatDataButton_Click(object sender, EventArgs e)
+        {
+            DataTable dt = new DataTable();
+            if (originDataFileText.Text != "")
+            {
+                try
+                {
+                    dt = DataHelper.CsvToDataTable(originDataFileText.Text);
+                }
+                catch(Exception ex)
+                {
+                    MsgBox.ShowError(ex.Message);
+                    return;
+                }
+            }
+            else
+            {
+                MsgBox.ShowError("请选择原始简报数据文件!");
+                return;
+            }
+            Regex removeLetterRegex = new Regex(@"^[A-Z].");
+            //规则
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    if (removeLetterCheck.Checked && removeLetterRegex.IsMatch(dt.Rows[i][j].ToString()))
+                    {
+                        dt.Rows[i][j] = removeLetterRegex.Replace(dt.Rows[i][j].ToString(), "");
+                    }
+                    if(trimCheck.Checked)
+                    {
+                        dt.Rows[i][j] = dt.Rows[i][j].ToString().Trim();
+                    }
+                }
+            }
+            try
+            {
+                DataHelper.DataTableToCsv(dt, originDataFileText.Text);
+            }
+            catch (Exception ex)
+            {
+                MsgBox.ShowError(ex.Message);
+                return;
+            }
+            MsgBox.ShowInfo("成功!");
         }
     }
 }

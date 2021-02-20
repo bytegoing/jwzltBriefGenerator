@@ -111,6 +111,12 @@
       <DependentUpon>mainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\MsgBox.cs" />
+    <Compile Include="Manager\ExportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\ExportForm.Designer.cs">
+      <DependentUpon>ExportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\ResizeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
     <Compile Include="Common\DataHelper.cs" />
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manager\ExportForm.resx">
+      <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager\ResizeForm.resx">
       <DependentUpon>ResizeForm.cs</DependentUpon>
