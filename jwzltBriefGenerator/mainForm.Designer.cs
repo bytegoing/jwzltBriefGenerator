@@ -47,20 +47,19 @@ namespace jwzltBriefGenerator
             this.label7 = new System.Windows.Forms.Label();
             this.userExportBriefDocButton = new System.Windows.Forms.Button();
             this.userProcessBriefButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.mergeButton = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.formatDataButton = new System.Windows.Forms.Button();
             this.editOriginDataButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.exportOriginData = new System.Windows.Forms.Button();
+            this.aboutButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // userExportBriefDataButton
             // 
-            this.userExportBriefDataButton.Location = new System.Drawing.Point(359, 142);
+            this.userExportBriefDataButton.Location = new System.Drawing.Point(349, 142);
             this.userExportBriefDataButton.Name = "userExportBriefDataButton";
             this.userExportBriefDataButton.Size = new System.Drawing.Size(168, 38);
             this.userExportBriefDataButton.TabIndex = 11;
@@ -82,7 +81,7 @@ namespace jwzltBriefGenerator
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(98, 15);
             this.label1.TabIndex = 11;
-            this.label1.Text = "1.汇报者姓名";
+            this.label1.Text = "1.操作者姓名";
             // 
             // label3
             // 
@@ -217,32 +216,14 @@ namespace jwzltBriefGenerator
             this.userProcessBriefButton.UseVisualStyleBackColor = true;
             this.userProcessBriefButton.Click += new System.EventHandler(this.userProcessBriefButton_Click);
             // 
-            // button1
+            // mergeButton
             // 
-            this.button1.Location = new System.Drawing.Point(182, 285);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(203, 38);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "合并简报数据";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(392, 241);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(99, 38);
-            this.button12.TabIndex = 17;
-            this.button12.Text = "3.导出评分表";
-            this.button12.UseVisualStyleBackColor = true;
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(287, 241);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(99, 38);
-            this.button11.TabIndex = 16;
-            this.button11.Text = "2.评分";
-            this.button11.UseVisualStyleBackColor = true;
+            this.mergeButton.Location = new System.Drawing.Point(18, 296);
+            this.mergeButton.Name = "mergeButton";
+            this.mergeButton.Size = new System.Drawing.Size(203, 38);
+            this.mergeButton.TabIndex = 18;
+            this.mergeButton.Text = "合并多份简报数据文件";
+            this.mergeButton.UseVisualStyleBackColor = true;
             // 
             // button10
             // 
@@ -250,7 +231,7 @@ namespace jwzltBriefGenerator
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(99, 38);
             this.button10.TabIndex = 15;
-            this.button10.Text = "1.导入待评分简报数据";
+            this.button10.Text = "1.进入评分";
             this.button10.UseVisualStyleBackColor = true;
             // 
             // formatDataButton
@@ -270,6 +251,7 @@ namespace jwzltBriefGenerator
             this.editOriginDataButton.TabIndex = 13;
             this.editOriginDataButton.Text = "1.原始数据裁剪";
             this.editOriginDataButton.UseVisualStyleBackColor = true;
+            this.editOriginDataButton.Click += new System.EventHandler(this.editOriginDataButton_Click);
             // 
             // label5
             // 
@@ -298,17 +280,27 @@ namespace jwzltBriefGenerator
             this.exportOriginData.Text = "3.导出";
             this.exportOriginData.UseVisualStyleBackColor = true;
             // 
+            // aboutButton
+            // 
+            this.aboutButton.Location = new System.Drawing.Point(694, 314);
+            this.aboutButton.Name = "aboutButton";
+            this.aboutButton.Size = new System.Drawing.Size(61, 27);
+            this.aboutButton.TabIndex = 21;
+            this.aboutButton.Text = "关于";
+            this.aboutButton.UseVisualStyleBackColor = true;
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 504);
+            this.ClientSize = new System.Drawing.Size(762, 347);
+            this.Controls.Add(this.aboutButton);
             this.Controls.Add(this.userExportBriefDataButton);
             this.Controls.Add(this.exportOriginData);
             this.Controls.Add(this.userExportBriefDocButton);
             this.Controls.Add(this.userProcessBriefButton);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.mergeButton);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.userFilename);
             this.Controls.Add(this.userProcessFromText);
@@ -316,12 +308,10 @@ namespace jwzltBriefGenerator
             this.Controls.Add(this.label10);
             this.Controls.Add(this.userChooseFileButton);
             this.Controls.Add(this.userProcessToText);
-            this.Controls.Add(this.button12);
             this.Controls.Add(this.userDepartmentCombo);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button11);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.editOriginDataButton);
             this.Controls.Add(this.label9);
@@ -346,8 +336,6 @@ namespace jwzltBriefGenerator
         private System.Windows.Forms.Button formatDataButton;
         private System.Windows.Forms.Button editOriginDataButton;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button userChooseFileButton;
@@ -365,9 +353,10 @@ namespace jwzltBriefGenerator
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox username;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button mergeButton;
         private System.Windows.Forms.Button userExportBriefDataButton;
         private System.Windows.Forms.Button exportOriginData;
+        private System.Windows.Forms.Button aboutButton;
     }
 }
 

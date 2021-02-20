@@ -1,24 +1,20 @@
-﻿using Newtonsoft.Json;
-using NPOI.SS.UserModel;
+﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace jwzltBriefGenerator
 {
-    class Utils
+    class XLSXHelper
     {
         public static string convertNumberToExcelColumn(int i, bool ifFromZero = true)
         {
-            if (!ifFromZero) i = i-1;
+            if (!ifFromZero) i = i - 1;
             if (i < 0)
             {
                 //throw new Exception("Invalid parameter");
@@ -35,32 +31,6 @@ namespace jwzltBriefGenerator
                 i = (int)((i - i % 26) / 26);
             } while (i > 0);
             return column;
-        }
-
-        public static string OpenFileDialog(string title="请选择文件", string filter="所有文件(*.*)|*.*", bool multiselect=false)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Multiselect = multiselect;//该值确定是否可以选择多个文件
-            dialog.Title = title;
-            dialog.Filter = filter;
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                 return dialog.FileName;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static void ShowTip(string title, string content)
-        {
-            MessageBox.Show(content, title);
-        }
-
-        static public bool ShowQuestion(string title, string content, MessageBoxIcon icon = MessageBoxIcon.Question)
-        {
-            return MessageBox.Show(content, title, MessageBoxButtons.OKCancel, icon) == DialogResult.OK;
         }
 
         public static DataTable XlsxToDataTable(string file, int sheetNumber)
@@ -114,7 +84,7 @@ namespace jwzltBriefGenerator
             {
                 throw new Exception("请填写操作人姓名");
             }
-            if (departmentObj == null || departmentObj.ToString() == "")
+            if (departmentObj == null || departmentObj.ToString() == "" || department == -1)
             {
                 throw new Exception("请选择院系！");
             }
@@ -137,7 +107,7 @@ namespace jwzltBriefGenerator
                 }
                 to--;
             }
-            DataTable dt = Utils.XlsxToDataTable(filename, department);
+            DataTable dt = XLSXHelper.XlsxToDataTable(filename, department);
             if (dt == null || dt.Rows.Count <= 0)
             {
                 throw new Exception("简报数据文件为空！请检查参数、选择的文件或院系是否正确！");
@@ -157,7 +127,7 @@ namespace jwzltBriefGenerator
             {
                 throw new Exception("起始条数大于终止条数!");
             }
-            //SELECT
+            //选择合适的行数
             DataTable dtTmp = dt.Clone();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -206,7 +176,7 @@ namespace jwzltBriefGenerator
                 FileStream fs = File.OpenRead(file);
                 wk = new XSSFWorkbook(fs);
                 fs.Close();
-                if(wk.NumberOfSheets <= sheetId)
+                if (wk.NumberOfSheets <= sheetId)
                 {
                     wk = new XSSFWorkbook();
                     sheet = wk.CreateSheet(sheetName);
@@ -225,7 +195,7 @@ namespace jwzltBriefGenerator
             }
 
             row = sheet.GetRow(0);
-            if(row == null) row = sheet.CreateRow(0);
+            if (row == null) row = sheet.CreateRow(0);
             for (int i = 0; i < dt.Columns.Count; i++)
             {
                 cell = row.GetCell(i);
@@ -263,53 +233,7 @@ namespace jwzltBriefGenerator
                 fs.Flush();
             }
 
-            if (ifCreate) Utils.ShowTip("提示", "保存成功!");
-        }
-
-        public static string SaveFileDialog(string filter = "xlsx|*.xlsx", string title = "保存到")
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Title = title;
-            sfd.Filter = filter;
-            sfd.ShowDialog();
-            return sfd.FileName;
+            if (ifCreate) MsgBox.ShowInfo("保存成功!");
         }
     }
-
-    public static class JsonUntity
-    {
-        /// <summary>
-        /// 将字典类型序列化为json字符串
-        /// </summary>
-        /// <typeparam name="TKey">字典key</typeparam>
-        /// <typeparam name="TValue">字典value</typeparam>
-        /// <param name="dict">要序列化的字典数据</param>
-        /// <returns>json字符串</returns>
-        public static string SerializeDictionaryToJsonString<TKey, TValue>(Dictionary<TKey, TValue> dict)
-        {
-            if (dict.Count == 0)
-                return "";
-            string jsonStr = JsonConvert.SerializeObject(dict);
-            return jsonStr;
-        }
-
-        /// <summary>
-        /// 将json字符串反序列化为字典类型
-        /// </summary>
-        /// <typeparam name="TKey">字典key</typeparam>
-        /// <typeparam name="TValue">字典value</typeparam>
-        /// <param name="jsonStr">json字符串</param>
-        /// <returns>字典数据</returns>
-        public static Dictionary<TKey, TValue> DeserializeStringToDictionary<TKey, TValue>(string jsonStr)
-        {
-            if (string.IsNullOrEmpty(jsonStr))
-                return new Dictionary<TKey, TValue>();
-
-            Dictionary<TKey, TValue> jsonDict = JsonConvert.DeserializeObject<Dictionary<TKey, TValue>>(jsonStr);
-
-            return jsonDict;
-
-        }
-    }
-
 }

@@ -25,14 +25,14 @@ namespace jwzltBriefGenerator
 
         private void userChooseFileButton_Click(object sender, EventArgs e)
         {
-            string userFilename = Utils.OpenFileDialog("请选择简报数据文件", "xlsx文件|*.xlsx");
+            string userFilename = FileHelper.OpenFileDialog("请选择简报数据文件", "xlsx文件|*.xlsx");
             if (userFilename != "")
             {
                 this.userFilename.Text = userFilename;
             }
             else
             {
-                Utils.ShowTip("提示", "请选择有效文件！");
+                MsgBox.ShowError("请选择有效文件！");
                 return;
             }
             userDepartmentCombo.Items.Clear(); //清空Combo中的所有项
@@ -47,7 +47,7 @@ namespace jwzltBriefGenerator
             }
             catch(Exception ex)
             {
-                Utils.ShowTip("提示", "错误: " + ex.Message);
+                MsgBox.ShowError("错误: " + ex.Message);
                 this.userFilename.Text = "";
                 return;
             }
@@ -74,20 +74,20 @@ namespace jwzltBriefGenerator
         private void userExportBriefDataButton_Click(object sender, EventArgs e)
         {
             int department = userDepartmentCombo.SelectedIndex;
-            string filename = Utils.SaveFileDialog();
+            string filename = FileHelper.SaveFileDialog();
             if(filename == "")
             {
-                Utils.ShowTip("提示", "请选择源数据文件");
+                MsgBox.ShowError("请选择源数据文件");
                 return;
             }
-            DataTable dt = Utils.XlsxToDataTable(userFilename.Text, department);
+            DataTable dt = XLSXHelper.XlsxToDataTable(userFilename.Text, department);
             try
             {
-                Utils.DataTableToXlsx(dt, filename, department, userDepartmentCombo.SelectedItem);
+                XLSXHelper.DataTableToXlsx(dt, filename, department, userDepartmentCombo.SelectedItem);
             } 
             catch(Exception ex)
             {
-                Utils.ShowTip("提示", ex.Message);
+                MsgBox.ShowError("错误: " + ex.Message);
                 return;
             }
         }
@@ -97,18 +97,18 @@ namespace jwzltBriefGenerator
             DataTable dt;
             try
             {
-                dt = Utils.GetBriefData(username.Text, userFilename.Text, userDepartmentCombo.SelectedIndex, userDepartmentCombo.SelectedItem, userProcessFromText.Text, userProcessToText.Text);
+                dt = XLSXHelper.GetBriefData(username.Text, userFilename.Text, userDepartmentCombo.SelectedIndex, userDepartmentCombo.SelectedItem, userProcessFromText.Text, userProcessToText.Text);
             }
             catch (Exception ex)
             {
-                Utils.ShowTip("提示", ex.Message);
+                MsgBox.ShowError("错误: " + ex.Message);
                 return;
             }
             Dictionary<string, object> data = new Dictionary<string, object>();
             for(int i = 0;i < dt.Columns.Count;i++)
             {
                 //data.Add(dt.Columns[i].ColumnName, dt.Rows[0][i].ToString());
-                data.Add(Utils.convertNumberToExcelColumn(i), dt.Rows[0][i].ToString());
+                data.Add(XLSXHelper.convertNumberToExcelColumn(i), dt.Rows[0][i].ToString());
             }
             data.Add("year", DateTime.Now.Year+"");
             data.Add("month", DateTime.Now.Month+"");
@@ -122,12 +122,12 @@ namespace jwzltBriefGenerator
                 for(int j = 0;j < dt.Columns.Count;j++)
                 {
                     //tmpd.Add(dt.Columns[j].ColumnName, dt.Rows[i][j].ToString());
-                    tmpd.Add(Utils.convertNumberToExcelColumn(j), dt.Rows[i][j].ToString());
+                    tmpd.Add(XLSXHelper.convertNumberToExcelColumn(j), dt.Rows[i][j].ToString());
                 }
                 record.Add(tmpd);
             }
             data.Add("briefs", record);
-            string infoJson = JsonUntity.SerializeDictionaryToJsonString<string, object>(data);
+            string infoJson = JsonHelper.SerializeDictionaryToJsonString<string, object>(data);
             infoJson = Convert.ToBase64String(Encoding.UTF8.GetBytes(infoJson));
             try
             {
@@ -139,10 +139,9 @@ namespace jwzltBriefGenerator
             }
             catch (Exception ex)
             {
-                Utils.ShowTip("错误", "保存失败: " + ex.Message);
+                MsgBox.ShowError("保存失败: " + ex.Message);
                 return;
             }
-            Utils.ShowTip("OK", "保存成功");
         }
 
         private void mainForm_Load(object sender, EventArgs e)
@@ -163,6 +162,15 @@ namespace jwzltBriefGenerator
             browser.Dispose();
             Dispose();
             Application.Exit();
+        }
+
+        private void editOriginDataButton_Click(object sender, EventArgs e)
+        {
+            Manager.ResizeForm rf = new Manager.ResizeForm();
+            rf.filename = userFilename.Text;
+            rf.department = userDepartmentCombo.SelectedIndex;
+            rf.departmentName = userDepartmentCombo.SelectedItem.ToString();
+            rf.ShowDialog();
         }
     }
 }

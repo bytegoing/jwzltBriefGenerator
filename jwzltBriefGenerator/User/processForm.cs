@@ -30,11 +30,11 @@ namespace jwzltBriefGenerator.User
         {
             try
             {
-                dt = Utils.GetBriefData(username, filename, department, departmentName, fromStr, toStr);
+                dt = XLSXHelper.GetBriefData(username, filename, department, departmentName, fromStr, toStr);
             } 
             catch(Exception ex)
             {
-                Utils.ShowTip("提示", ex.Message);
+                MsgBox.ShowError("错误: " + ex.Message);
                 this.Close();
                 return;
             }
@@ -109,7 +109,7 @@ namespace jwzltBriefGenerator.User
         {
             if(dt == null || dt.Rows.Count <= 0)
             {
-                Utils.ShowTip("错误", "简报数据文件为空！请检查参数、选择的文件或院系是否正确！");
+                MsgBox.ShowError("简报数据文件为空！请检查参数、选择的文件或院系是否正确！");
                 this.Close();
                 return;
             }
@@ -186,7 +186,7 @@ namespace jwzltBriefGenerator.User
         private void saveTotal() //保存整个dt，写回excel
         {
             saveNowContent();
-            Utils.DataTableToXlsx(dt, filename, department, departmentName);
+            XLSXHelper.DataTableToXlsx(dt, filename, department, departmentName);
         }
 
         private void singlePrevButton_Click(object sender, EventArgs e)
@@ -196,7 +196,7 @@ namespace jwzltBriefGenerator.User
             {
                 if (singleList.SelectedIndices[0] == singleList.Items.Count - 1)
                 {
-                    if (Utils.ShowQuestion("提示", "已经是第一个项了，是否要回到上一条简报？"))
+                    if(MsgBox.ShowAsk("已经是第一个项了，是否要回到上一条简报？"))
                     {
                         prevButton.PerformClick();
                     }
@@ -215,7 +215,7 @@ namespace jwzltBriefGenerator.User
             }
             catch(Exception ex)
             {
-                Utils.ShowTip("失败", "保存失败: "+ex.Message);
+                MsgBox.ShowError("保存失败: " + ex.Message);
             }
             this.Close();
             return;
@@ -226,7 +226,7 @@ namespace jwzltBriefGenerator.User
             saveNowContent();
             if (singleList.SelectedIndices[0] == singleList.Items.Count - 1)
             {
-                if(Utils.ShowQuestion("提示", "已经是最后一个项了，是否要进入下一条简报？"))
+                if(MsgBox.ShowAsk("已经是最后一个项了，是否要进入下一条简报？"))
                 {
                     nextButton.PerformClick();
                 }
@@ -240,13 +240,13 @@ namespace jwzltBriefGenerator.User
         {
             if(totalList.Items.Count <= 1)
             {
-                Utils.ShowTip("提示", "仅有一条简报，无法删除!");
+                MsgBox.ShowError("仅有一条简报，无法删除!");
                 return;
             }
-            if(Utils.ShowQuestion("询问", "确认要删除本条记录吗？"))
+            if(MsgBox.ShowAsk("确认要删除本条记录吗？"))
             {
                 dt.Rows[totalList.SelectedIndex].Delete();
-                Utils.ShowTip("提示", "删除成功!");
+                MsgBox.ShowInfo("删除成功!");
                 Reload(SAVE_PROGRESS.Combo);
             }
         }
@@ -256,7 +256,7 @@ namespace jwzltBriefGenerator.User
             saveNowContent();
             if(totalList.SelectedIndex == 0)
             {
-                Utils.ShowTip("提示", "已经是第一个简报了。");
+                MsgBox.ShowError("已经是第一个简报了。");
                 return;
             }
             totalList.SelectedIndex -= 1;
@@ -267,7 +267,7 @@ namespace jwzltBriefGenerator.User
             saveNowContent();
             if (totalList.SelectedIndex == totalList.Items.Count - 1)
             {
-                Utils.ShowTip("提示", "已经是最后一个简报了。");
+                MsgBox.ShowError("已经是最后一个简报了。");
                 return;
             }
             totalList.SelectedIndex += 1;
