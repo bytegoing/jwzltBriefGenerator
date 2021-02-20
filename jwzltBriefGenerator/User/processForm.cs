@@ -30,7 +30,7 @@ namespace jwzltBriefGenerator.User
         {
             try
             {
-                dt = XLSXHelper.GetBriefData(username, filename, department, departmentName, fromStr, toStr);
+                dt = DataHelper.GetBriefData(username, filename, department, departmentName, fromStr, toStr);
             } 
             catch(Exception ex)
             {
@@ -38,8 +38,8 @@ namespace jwzltBriefGenerator.User
                 this.Close();
                 return;
             }
-            if (fromStr == "") fromStr = "0";
-            if (toStr == "") toStr = "0";
+            if (fromStr == "") fromStr = "-";
+            if (toStr == "") toStr = "-";
             fileLabel.Text = (Convert.ToInt32(fromStr) + 1) + "~" + (Convert.ToInt32(toStr) + 1);
             departmentText.Text = departmentName;
             //判断自定义列个数，目前最大支持2
@@ -186,7 +186,7 @@ namespace jwzltBriefGenerator.User
         private void saveTotal() //保存整个dt，写回excel
         {
             saveNowContent();
-            XLSXHelper.DataTableToXlsx(dt, filename, department, departmentName);
+            DataHelper.DataTableToXlsx(dt, filename, department, departmentName);
         }
 
         private void singlePrevButton_Click(object sender, EventArgs e)

@@ -131,7 +131,7 @@
     <Compile Include="User\processForm.Designer.cs">
       <DependentUpon>processForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\XLSXHelper.cs" />
+    <Compile Include="Common\DataHelper.cs" />
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
     </EmbeddedResource>

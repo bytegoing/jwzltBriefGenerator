@@ -80,10 +80,10 @@ namespace jwzltBriefGenerator
                 MsgBox.ShowError("请选择源数据文件");
                 return;
             }
-            DataTable dt = XLSXHelper.XlsxToDataTable(userFilename.Text, department);
+            DataTable dt = DataHelper.XlsxToDataTable(userFilename.Text, department);
             try
             {
-                XLSXHelper.DataTableToXlsx(dt, filename, department, userDepartmentCombo.SelectedItem);
+                DataHelper.DataTableToXlsx(dt, filename, department, userDepartmentCombo.SelectedItem);
             } 
             catch(Exception ex)
             {
@@ -97,7 +97,7 @@ namespace jwzltBriefGenerator
             DataTable dt;
             try
             {
-                dt = XLSXHelper.GetBriefData(username.Text, userFilename.Text, userDepartmentCombo.SelectedIndex, userDepartmentCombo.SelectedItem, userProcessFromText.Text, userProcessToText.Text);
+                dt = DataHelper.GetBriefData(username.Text, userFilename.Text, userDepartmentCombo.SelectedIndex, userDepartmentCombo.SelectedItem, userProcessFromText.Text, userProcessToText.Text);
             }
             catch (Exception ex)
             {
@@ -108,7 +108,7 @@ namespace jwzltBriefGenerator
             for(int i = 0;i < dt.Columns.Count;i++)
             {
                 //data.Add(dt.Columns[i].ColumnName, dt.Rows[0][i].ToString());
-                data.Add(XLSXHelper.convertNumberToExcelColumn(i), dt.Rows[0][i].ToString());
+                data.Add(DataHelper.convertNumberToExcelColumn(i), dt.Rows[0][i].ToString());
             }
             data.Add("year", DateTime.Now.Year+"");
             data.Add("month", DateTime.Now.Month+"");
@@ -122,7 +122,7 @@ namespace jwzltBriefGenerator
                 for(int j = 0;j < dt.Columns.Count;j++)
                 {
                     //tmpd.Add(dt.Columns[j].ColumnName, dt.Rows[i][j].ToString());
-                    tmpd.Add(XLSXHelper.convertNumberToExcelColumn(j), dt.Rows[i][j].ToString());
+                    tmpd.Add(DataHelper.convertNumberToExcelColumn(j), dt.Rows[i][j].ToString());
                 }
                 record.Add(tmpd);
             }
@@ -164,13 +164,33 @@ namespace jwzltBriefGenerator
             Application.Exit();
         }
 
+        private void originDataFileButton_Click(object sender, EventArgs e)
+        {
+            string originFilename = FileHelper.OpenFileDialog("请选择原始简报数据文件", "csv文件|*.csv");
+            if (originFilename != "")
+            {
+                this.originDataFileText.Text = originFilename;
+            }
+            else
+            {
+                MsgBox.ShowError("请选择有效文件！");
+                return;
+            }
+        }
+
         private void editOriginDataButton_Click(object sender, EventArgs e)
         {
             Manager.ResizeForm rf = new Manager.ResizeForm();
-            rf.filename = userFilename.Text;
-            rf.department = userDepartmentCombo.SelectedIndex;
-            rf.departmentName = userDepartmentCombo.SelectedItem.ToString();
-            rf.ShowDialog();
+            if(originDataFileText.Text != "")
+            {
+                rf.filename = originDataFileText.Text;
+                rf.ShowDialog();
+            }
+            else
+            {
+                MsgBox.ShowError("请选择原始简报数据文件!");
+                return;
+            }
         }
     }
 }

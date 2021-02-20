@@ -6,11 +6,12 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace jwzltBriefGenerator
 {
-    class XLSXHelper
+    class DataHelper
     {
         public static string convertNumberToExcelColumn(int i, bool ifFromZero = true)
         {
@@ -78,7 +79,7 @@ namespace jwzltBriefGenerator
             return dt;
         }
 
-        public static DataTable GetBriefData(string username, string filename, int department, object departmentObj, string fromStr, string toStr)
+        public static DataTable GetBriefData(string username, string filename, int department, object departmentObj, string fromStr, string toStr, int sheetRange = 0)
         {
             if (username == "")
             {
@@ -107,7 +108,7 @@ namespace jwzltBriefGenerator
                 }
                 to--;
             }
-            DataTable dt = XLSXHelper.XlsxToDataTable(filename, department);
+            DataTable dt = DataHelper.XlsxToDataTable(filename, department);
             if (dt == null || dt.Rows.Count <= 0)
             {
                 throw new Exception("简报数据文件为空！请检查参数、选择的文件或院系是否正确！");
@@ -234,6 +235,55 @@ namespace jwzltBriefGenerator
             }
 
             if (ifCreate) MsgBox.ShowInfo("保存成功!");
+        }
+
+        public static DataTable CsvToDataTable(string filePath, bool hasTitle = true, int contentStartFrom = 1)
+        {
+            DataTable dt = new DataTable();           //要输出的数据表
+            StreamReader sr = new StreamReader(filePath); //文件读入流
+            bool bFirst = true;                       //指示是否第一次读取数据
+            int nowLine = 0;
+
+            //逐行读取
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                string[] elements = line.Split(',');
+
+                int totalLength = elements[elements.Length - 1] == "" ? elements.Length - 1 : elements.Length;
+
+                //第一次读取数据时，要创建数据列
+                if (bFirst)
+                {
+                    for (int i = 0; i < totalLength; i++)
+                    {
+                        dt.Columns.Add();
+                    }
+                    bFirst = false;
+                    //有标题行时，第一行当做标题行处理
+                    if (hasTitle)
+                    {
+                        for (int i = 0; i < dt.Columns.Count && i < elements.Length; i++)
+                        {
+                            dt.Columns[i].ColumnName = elements[i];
+                        }
+                        hasTitle = false;
+                    }
+                }
+                else
+                {
+                    dt.Rows.Add();
+                    //读取一行数据
+                    for(int i = 0;i < totalLength;i++)
+                    {
+                        dt.Rows[nowLine][i] = elements[i]; //防止空列导致错误
+                    }
+                    nowLine++;
+                }
+            }
+            sr.Close();
+
+            return dt;
         }
     }
 }
