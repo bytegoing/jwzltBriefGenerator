@@ -382,7 +382,7 @@ namespace jwzltBriefGenerator.User
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "processForm";
-            this.Text = "简报数据处理";
+            this.Text = "4.简报数据处理 - A.简报文件生成";
             this.Load += new System.EventHandler(this.processForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -53,26 +53,26 @@ namespace jwzltBriefGenerator
             this.editOriginDataButton = new System.Windows.Forms.Button();
             this.exportOriginData = new System.Windows.Forms.Button();
             this.aboutButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupA = new System.Windows.Forms.GroupBox();
+            this.groupB = new System.Windows.Forms.GroupBox();
+            this.groupFormat = new System.Windows.Forms.GroupBox();
+            this.removeLetterCheck = new System.Windows.Forms.CheckBox();
+            this.trimCheck = new System.Windows.Forms.CheckBox();
             this.originDataFileText = new System.Windows.Forms.TextBox();
             this.originDataFileButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupC = new System.Windows.Forms.GroupBox();
+            this.groupCombo = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupDataFileText = new System.Windows.Forms.TextBox();
             this.groupDataFileButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.groupCombo = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.trimCheck = new System.Windows.Forms.CheckBox();
-            this.removeLetterCheck = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.groupD = new System.Windows.Forms.GroupBox();
+            this.groupA.SuspendLayout();
+            this.groupB.SuspendLayout();
+            this.groupFormat.SuspendLayout();
+            this.groupC.SuspendLayout();
+            this.groupD.SuspendLayout();
             this.SuspendLayout();
             // 
             // userExportBriefDataButton
@@ -251,6 +251,7 @@ namespace jwzltBriefGenerator
             this.scoreButton.TabIndex = 15;
             this.scoreButton.Text = "1.进入评分";
             this.scoreButton.UseVisualStyleBackColor = true;
+            this.scoreButton.Click += new System.EventHandler(this.scoreButton_Click);
             // 
             // formatDataButton
             // 
@@ -280,6 +281,7 @@ namespace jwzltBriefGenerator
             this.exportOriginData.TabIndex = 20;
             this.exportOriginData.Text = "3.导出为简报数据文件";
             this.exportOriginData.UseVisualStyleBackColor = true;
+            this.exportOriginData.Click += new System.EventHandler(this.exportOriginData_Click);
             // 
             // aboutButton
             // 
@@ -290,47 +292,83 @@ namespace jwzltBriefGenerator
             this.aboutButton.Text = "关于";
             this.aboutButton.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // groupA
             // 
-            this.groupBox1.Controls.Add(this.userExportBriefDataButton);
-            this.groupBox1.Controls.Add(this.userExportBriefDocButton);
-            this.groupBox1.Controls.Add(this.userProcessBriefButton);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.userFilename);
-            this.groupBox1.Controls.Add(this.userProcessFromText);
-            this.groupBox1.Controls.Add(this.username);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.userChooseFileButton);
-            this.groupBox1.Controls.Add(this.userProcessToText);
-            this.groupBox1.Controls.Add(this.userDepartmentCombo);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Location = new System.Drawing.Point(7, 9);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(738, 206);
-            this.groupBox1.TabIndex = 22;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "A.简报文件生成";
+            this.groupA.Controls.Add(this.userExportBriefDataButton);
+            this.groupA.Controls.Add(this.userExportBriefDocButton);
+            this.groupA.Controls.Add(this.userProcessBriefButton);
+            this.groupA.Controls.Add(this.label11);
+            this.groupA.Controls.Add(this.label12);
+            this.groupA.Controls.Add(this.userFilename);
+            this.groupA.Controls.Add(this.userProcessFromText);
+            this.groupA.Controls.Add(this.username);
+            this.groupA.Controls.Add(this.label10);
+            this.groupA.Controls.Add(this.userChooseFileButton);
+            this.groupA.Controls.Add(this.userProcessToText);
+            this.groupA.Controls.Add(this.userDepartmentCombo);
+            this.groupA.Controls.Add(this.label3);
+            this.groupA.Controls.Add(this.label1);
+            this.groupA.Controls.Add(this.label2);
+            this.groupA.Controls.Add(this.label8);
+            this.groupA.Controls.Add(this.label9);
+            this.groupA.Controls.Add(this.label7);
+            this.groupA.Location = new System.Drawing.Point(7, 9);
+            this.groupA.Name = "groupA";
+            this.groupA.Size = new System.Drawing.Size(738, 206);
+            this.groupA.TabIndex = 22;
+            this.groupA.TabStop = false;
+            this.groupA.Text = "A.简报文件生成";
             // 
-            // groupBox2
+            // groupB
             // 
-            this.groupBox2.Controls.Add(this.groupBox5);
-            this.groupBox2.Controls.Add(this.originDataFileText);
-            this.groupBox2.Controls.Add(this.originDataFileButton);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.exportOriginData);
-            this.groupBox2.Controls.Add(this.editOriginDataButton);
-            this.groupBox2.Location = new System.Drawing.Point(7, 227);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(738, 145);
-            this.groupBox2.TabIndex = 23;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "B.简报原始数据处理";
+            this.groupB.Controls.Add(this.groupFormat);
+            this.groupB.Controls.Add(this.originDataFileText);
+            this.groupB.Controls.Add(this.originDataFileButton);
+            this.groupB.Controls.Add(this.label4);
+            this.groupB.Controls.Add(this.exportOriginData);
+            this.groupB.Controls.Add(this.editOriginDataButton);
+            this.groupB.Location = new System.Drawing.Point(7, 227);
+            this.groupB.Name = "groupB";
+            this.groupB.Size = new System.Drawing.Size(738, 145);
+            this.groupB.TabIndex = 23;
+            this.groupB.TabStop = false;
+            this.groupB.Text = "B.简报原始数据处理";
+            // 
+            // groupFormat
+            // 
+            this.groupFormat.Controls.Add(this.removeLetterCheck);
+            this.groupFormat.Controls.Add(this.trimCheck);
+            this.groupFormat.Controls.Add(this.formatDataButton);
+            this.groupFormat.Location = new System.Drawing.Point(121, 55);
+            this.groupFormat.Name = "groupFormat";
+            this.groupFormat.Size = new System.Drawing.Size(385, 76);
+            this.groupFormat.TabIndex = 26;
+            this.groupFormat.TabStop = false;
+            this.groupFormat.Text = "2.格式化";
+            // 
+            // removeLetterCheck
+            // 
+            this.removeLetterCheck.AutoSize = true;
+            this.removeLetterCheck.Checked = true;
+            this.removeLetterCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.removeLetterCheck.Location = new System.Drawing.Point(6, 24);
+            this.removeLetterCheck.Name = "removeLetterCheck";
+            this.removeLetterCheck.Size = new System.Drawing.Size(256, 19);
+            this.removeLetterCheck.TabIndex = 25;
+            this.removeLetterCheck.Text = "去除字母标号(例：A.必修→必修)";
+            this.removeLetterCheck.UseVisualStyleBackColor = true;
+            // 
+            // trimCheck
+            // 
+            this.trimCheck.AutoSize = true;
+            this.trimCheck.Checked = true;
+            this.trimCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.trimCheck.Location = new System.Drawing.Point(6, 49);
+            this.trimCheck.Name = "trimCheck";
+            this.trimCheck.Size = new System.Drawing.Size(179, 19);
+            this.trimCheck.TabIndex = 24;
+            this.trimCheck.Text = "去除文本两端空白字符";
+            this.trimCheck.UseVisualStyleBackColor = true;
             // 
             // originDataFileText
             // 
@@ -359,57 +397,20 @@ namespace jwzltBriefGenerator
             this.label4.TabIndex = 21;
             this.label4.Text = "1.原始简报数据文件(csv)";
             // 
-            // groupBox3
+            // groupC
             // 
-            this.groupBox3.Controls.Add(this.groupCombo);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.groupDataFileText);
-            this.groupBox3.Controls.Add(this.groupDataFileButton);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.scoreButton);
-            this.groupBox3.Location = new System.Drawing.Point(7, 380);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(738, 99);
-            this.groupBox3.TabIndex = 24;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "C.简报评分";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.mergeButton);
-            this.groupBox4.Controls.Add(this.aboutButton);
-            this.groupBox4.Location = new System.Drawing.Point(7, 485);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(738, 83);
-            this.groupBox4.TabIndex = 25;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "D.其他操作";
-            // 
-            // groupDataFileText
-            // 
-            this.groupDataFileText.Location = new System.Drawing.Point(197, 23);
-            this.groupDataFileText.Name = "groupDataFileText";
-            this.groupDataFileText.ReadOnly = true;
-            this.groupDataFileText.Size = new System.Drawing.Size(476, 25);
-            this.groupDataFileText.TabIndex = 26;
-            // 
-            // groupDataFileButton
-            // 
-            this.groupDataFileButton.Location = new System.Drawing.Point(679, 23);
-            this.groupDataFileButton.Name = "groupDataFileButton";
-            this.groupDataFileButton.Size = new System.Drawing.Size(45, 26);
-            this.groupDataFileButton.TabIndex = 25;
-            this.groupDataFileButton.Text = "选择";
-            this.groupDataFileButton.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 29);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(176, 15);
-            this.label5.TabIndex = 24;
-            this.label5.Text = "1.部简报数据文件(xlsx)";
+            this.groupC.Controls.Add(this.groupCombo);
+            this.groupC.Controls.Add(this.label6);
+            this.groupC.Controls.Add(this.groupDataFileText);
+            this.groupC.Controls.Add(this.groupDataFileButton);
+            this.groupC.Controls.Add(this.label5);
+            this.groupC.Controls.Add(this.scoreButton);
+            this.groupC.Location = new System.Drawing.Point(7, 380);
+            this.groupC.Name = "groupC";
+            this.groupC.Size = new System.Drawing.Size(738, 99);
+            this.groupC.TabIndex = 24;
+            this.groupC.TabStop = false;
+            this.groupC.Text = "C.简报评分";
             // 
             // groupCombo
             // 
@@ -429,65 +430,67 @@ namespace jwzltBriefGenerator
             this.label6.TabIndex = 28;
             this.label6.Text = "2.选择部门";
             // 
-            // trimCheck
+            // groupDataFileText
             // 
-            this.trimCheck.AutoSize = true;
-            this.trimCheck.Checked = true;
-            this.trimCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.trimCheck.Location = new System.Drawing.Point(6, 49);
-            this.trimCheck.Name = "trimCheck";
-            this.trimCheck.Size = new System.Drawing.Size(179, 19);
-            this.trimCheck.TabIndex = 24;
-            this.trimCheck.Text = "去除文本两端空白字符";
-            this.trimCheck.UseVisualStyleBackColor = true;
+            this.groupDataFileText.Location = new System.Drawing.Point(197, 23);
+            this.groupDataFileText.Name = "groupDataFileText";
+            this.groupDataFileText.ReadOnly = true;
+            this.groupDataFileText.Size = new System.Drawing.Size(476, 25);
+            this.groupDataFileText.TabIndex = 26;
             // 
-            // removeLetterCheck
+            // groupDataFileButton
             // 
-            this.removeLetterCheck.AutoSize = true;
-            this.removeLetterCheck.Checked = true;
-            this.removeLetterCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.removeLetterCheck.Location = new System.Drawing.Point(6, 24);
-            this.removeLetterCheck.Name = "removeLetterCheck";
-            this.removeLetterCheck.Size = new System.Drawing.Size(256, 19);
-            this.removeLetterCheck.TabIndex = 25;
-            this.removeLetterCheck.Text = "去除字母标号(例：A.必修→必修)";
-            this.removeLetterCheck.UseVisualStyleBackColor = true;
+            this.groupDataFileButton.Location = new System.Drawing.Point(679, 23);
+            this.groupDataFileButton.Name = "groupDataFileButton";
+            this.groupDataFileButton.Size = new System.Drawing.Size(45, 26);
+            this.groupDataFileButton.TabIndex = 25;
+            this.groupDataFileButton.Text = "选择";
+            this.groupDataFileButton.UseVisualStyleBackColor = true;
+            this.groupDataFileButton.Click += new System.EventHandler(this.groupDataFileButton_Click);
             // 
-            // groupBox5
+            // label5
             // 
-            this.groupBox5.Controls.Add(this.removeLetterCheck);
-            this.groupBox5.Controls.Add(this.trimCheck);
-            this.groupBox5.Controls.Add(this.formatDataButton);
-            this.groupBox5.Location = new System.Drawing.Point(121, 55);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(385, 76);
-            this.groupBox5.TabIndex = 26;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "2.格式化";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 29);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(176, 15);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "1.部简报数据文件(xlsx)";
+            // 
+            // groupD
+            // 
+            this.groupD.Controls.Add(this.mergeButton);
+            this.groupD.Controls.Add(this.aboutButton);
+            this.groupD.Location = new System.Drawing.Point(7, 485);
+            this.groupD.Name = "groupD";
+            this.groupD.Size = new System.Drawing.Size(738, 83);
+            this.groupD.TabIndex = 25;
+            this.groupD.TabStop = false;
+            this.groupD.Text = "D.其他操作";
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(762, 577);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupD);
+            this.Controls.Add(this.groupC);
+            this.Controls.Add(this.groupB);
+            this.Controls.Add(this.groupA);
             this.Name = "mainForm";
             this.Text = "NEPU教务助理团简报助手";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.mainForm_FormClosed);
             this.Load += new System.EventHandler(this.mainForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.groupA.ResumeLayout(false);
+            this.groupA.PerformLayout();
+            this.groupB.ResumeLayout(false);
+            this.groupB.PerformLayout();
+            this.groupFormat.ResumeLayout(false);
+            this.groupFormat.PerformLayout();
+            this.groupC.ResumeLayout(false);
+            this.groupC.PerformLayout();
+            this.groupD.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -517,21 +520,21 @@ namespace jwzltBriefGenerator
         private System.Windows.Forms.Button userExportBriefDataButton;
         private System.Windows.Forms.Button exportOriginData;
         private System.Windows.Forms.Button aboutButton;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupA;
+        private System.Windows.Forms.GroupBox groupB;
         private System.Windows.Forms.TextBox originDataFileText;
         private System.Windows.Forms.Button originDataFileButton;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupC;
         private System.Windows.Forms.ComboBox groupCombo;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox groupDataFileText;
         private System.Windows.Forms.Button groupDataFileButton;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupD;
         private System.Windows.Forms.CheckBox removeLetterCheck;
         private System.Windows.Forms.CheckBox trimCheck;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupFormat;
     }
 }
 

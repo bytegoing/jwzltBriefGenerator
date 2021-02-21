@@ -241,5 +241,67 @@ namespace jwzltBriefGenerator
             }
             MsgBox.ShowInfo("成功!");
         }
+
+        private void exportOriginData_Click(object sender, EventArgs e)
+        {
+            Manager.ExportForm ef = new Manager.ExportForm();
+            if (originDataFileText.Text != "")
+            {
+                ef.filename = originDataFileText.Text;
+                ef.ShowDialog();
+            }
+            else
+            {
+                MsgBox.ShowError("请选择原始简报数据文件!");
+                return;
+            }
+        }
+
+        private void groupDataFileButton_Click(object sender, EventArgs e)
+        {
+            string filename = FileHelper.OpenFileDialog("请选择简报数据文件", "xlsx文件|*.xlsx");
+            if (filename != "")
+            {
+                this.groupDataFileText.Text = filename;
+            }
+            else
+            {
+                MsgBox.ShowError("请选择有效文件！");
+                return;
+            }
+            groupCombo.Items.Clear(); //清空Combo中的所有项
+            //开始读取Sheet名称
+            XSSFWorkbook workbook;
+            try
+            {
+                using (FileStream stream = File.OpenRead(filename))
+                {
+                    workbook = new XSSFWorkbook(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.ShowError("错误: " + ex.Message);
+                this.groupDataFileText.Text = "";
+                return;
+            }
+            int SheetCount = workbook.NumberOfSheets;//获取表的数量
+            for (int i = 0; i < SheetCount; i++) //逐个加入Combo
+            {
+                groupCombo.Items.Add(workbook.GetSheetName(i));
+            }
+            workbook.Clear(); //清空workbook，释放内存。
+        }
+
+        private void scoreButton_Click(object sender, EventArgs e)
+        {
+            MsgBox.ShowInfo("暂不可用!");
+            return;
+            Manager.ScoreForm sf = new Manager.ScoreForm();
+            sf.filename = groupDataFileText.Text;
+            sf.department = groupCombo.SelectedIndex;
+            sf.departmentName = groupCombo.SelectedItem.ToString();
+            sf.ShowDialog();
+        }
     }
 }
